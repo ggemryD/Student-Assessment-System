@@ -38,6 +38,27 @@ if ($role === 'student' && $active_semester) {
     $stmt->execute();
     $active_surveys = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
+
+// bag o ning ubos
+
+// Add this PHP code after getting the active surveys (around line 30 in your dashboard)
+// if ($role === 'student' && $active_semester) {
+//     // Get faculty that student has rated
+//     $stmt = $conn->prepare("
+//         SELECT DISTINCT f.first_name, f.last_name, f.faculty_number, f.department,
+//                r.created_at as rating_date
+//         FROM responses r 
+//         JOIN faculty f ON r.faculty_id = f.id 
+//         WHERE r.student_id = ? 
+//         AND r.semester_id = ?
+//         ORDER BY r.created_at DESC
+//     ");
+//     $student_id = $user_info['id'];
+//     $semester_id = $active_semester['id'];
+//     $stmt->bind_param("ii", $student_id, $semester_id);
+//     $stmt->execute();
+//     $rated_faculty = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -242,6 +263,43 @@ if ($role === 'student' && $active_semester) {
                 padding: 1.5rem;
             }
         }
+
+        /* bag.o */
+        /* .rated-faculty-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .rated-faculty-card:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .faculty-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .faculty-info h6 {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .rated-faculty-card {
+                margin-bottom: 1rem;
+            }
+        } */
     </style>
 </head>
 <body>
@@ -294,6 +352,11 @@ if ($role === 'student' && $active_semester) {
                                 <i class="fas fa-star me-2"></i>Faculty Rating
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="student/rated.php">
+                                <i class="fas fa-check-circle me-2"></i>Rated Faculty
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <div class="navbar-nav">
@@ -327,6 +390,44 @@ if ($role === 'student' && $active_semester) {
                 </div>
             <?php endif; ?>
         </div>
+
+        <!-- Add this HTML right after the welcome-section div and before the student dashboard cards -->
+        <!-- <?php if (isStudent() && !empty($rated_faculty)): ?>
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-star me-2"></i>Faculty You've Rated This Semester
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <?php foreach ($rated_faculty as $faculty): ?>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="rated-faculty-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="faculty-avatar me-3">
+                                                <i class="fas fa-user-tie"></i>
+                                            </div>
+                                            <div class="faculty-info">
+                                                <h6 class="mb-1"><?php echo clean($faculty['first_name'] . ' ' . $faculty['last_name']); ?></h6>
+                                                <small class="text-muted"><?php echo clean($faculty['department']); ?></small>
+                                                <div class="text-success small">
+                                                    <i class="fas fa-check-circle me-1"></i>
+                                                    Rated on <?php echo date('M j, Y', strtotime($faculty['rating_date'])); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?> -->
 
         <?php if (isAdmin()): ?>
         <div class="row g-4">

@@ -312,6 +312,11 @@ $completed_surveys = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                             <i class="fas fa-star me-2"></i>Faculty Rating
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="rated.php">
+                            <i class="fas fa-check-circle me-2"></i>Rated Faculty
+                        </a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
